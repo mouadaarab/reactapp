@@ -6,6 +6,8 @@ import Categories from "../components/MyProfile/Categories"
 import Informations from "../components/MyProfile/Informations"
 import Summary from "../components/MyProfile/Summary"
 import { updateStep } from "../../state/actions";
+import Noty from 'noty';
+import {validateEmail, validationPhoneNumber} from '../../validation';
 
 
 function Steps(step) {
@@ -60,9 +62,46 @@ class myProfile extends Component {
     }
 
     handleClick = ()=> {
-        if(this.state.step<4){
+        let error = false;
+        let error_text = false;
+        if(this.state.step==1){
+            if(!this.props.profileData.Profile.businessType){
+                error=true;
+                error_text="Please choose one option";
+            }
+        }else if(this.state.step==2){
+            if(this.props.profileData.Profile.categories.length==0){
+                error=true;
+                error_text="Please choose at least one option";
+            }
+        }else if(this.state.step==3){
+            console.log(this.props.profileData.Profile.email)
+            if(!validateEmail(this.props.profileData.Profile.email)){
+                error=true;
+                error_text="A correct email field is required";
+            }else if(this.props.profileData.Profile.name.length<4){
+                error=true;
+                error_text="A correct name field is required";
+            }else if(!validationPhoneNumber(this.props.profileData.Profile.phoneNumber)){
+                error=true;
+                error_text="A correct phone number field is required";
+            }
+        }
+        
+        if(this.state.step<4 && !error){
             this.props.updateStep(this.state.step+1);
             this.setState({step: this.state.step+1});
+        }else{
+            new Noty({
+                type: 'error',
+                layout: 'bottomRight',
+                theme: 'mint',
+                text: error_text,
+                timeout: '4000',
+                progressBar: true,
+                closeWith: ['click'],
+            }).show();
+            
         }
     }
 

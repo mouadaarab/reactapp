@@ -1,5 +1,8 @@
 @import '~bootstrap/scss/bootstrap.scss';
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+@import "~noty/src/noty.scss";
+@import "~noty/src/themes/mint.scss";
+
 
 $roboto: 'Roboto', sans-serif; 
 $bc: #404040;
